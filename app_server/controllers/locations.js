@@ -47,6 +47,17 @@ const homelist = (req, res) => {
         },
     };
     request(requestOptions, (err, { statusCode }, body) => {
+        if (err) {
+            console.error("Request error:", err);
+            return renderHomepage(req, res, data);
+        }
+
+        if (!response) {
+            console.error("No response received");
+            return renderHomepage(req, res, data);
+        }
+
+        const statusCode = response.statusCode;
         let data = [];
         if (statusCode === 200 && body.length) {
             data = body.map((item) => {
