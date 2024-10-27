@@ -6,29 +6,6 @@ if (process.env.NODE_ENV == "production") {
     apiOptions.server = "https://yourapi.com";
 }
 
-const requestOptions = {
-    url: `${apiOptions.server}`,
-    method: "GET",
-    json: {},
-    qs: {
-        offset: 20,
-    },
-};
-
-request(requestOptions, (err, response, body) => {
-    if (err) {
-        console.log(err);
-
-        if (response.statusCode === 200) {
-            console.log(body);
-        } else {
-            console.log(response.statusCode);
-        }
-    } else {
-        console.log("No response received");
-    }
-});
-
 const renderHomepage = (req, res, responseBody) => {
     let message = null;
     if (!(responseBody instanceof Array)) {
