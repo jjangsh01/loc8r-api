@@ -57,7 +57,6 @@ const homelist = (req, res) => {
             return renderHomepage(req, res, data);
         }
 
-        const statusCode = response.statusCode;
         let data = [];
         if (statusCode === 200 && body.length) {
             data = body.map((item) => {
