@@ -6,6 +6,32 @@ if (process.env.NODE_ENV == "production") {
     apiOptions.server = "https://yourapi.com";
 }
 
+const homelist = (req, res) => {
+    const path = "/api/locations";
+    const requestOptions = {
+        url: `${apiOptions.server}${path}`,
+        method: "GET",
+        json: {},
+        qs: {
+            // lng: 1,
+            // lat: 1,
+            lng: 126.989697,
+            lat: 37.28413,
+            maxDistance: 200000,
+        },
+    };
+    request(requestOptions, (err, { statusCode }, body) => {
+        let data = [];
+        if (statusCode === 200 && body.length) {
+            data = body.map((item) => {
+                item.distance = formatDistance(item.distance);
+                return item;
+            });
+        }
+        renderHomepage(req, res, data);
+    });
+};
+
 const renderHomepage = (req, res, responseBody) => {
     let message = null;
     if (!(responseBody instanceof Array)) {
@@ -29,42 +55,6 @@ const renderHomepage = (req, res, responseBody) => {
          Let Loc8r help you find the place you're looking for.",
         locations: responseBody,
         message,
-    });
-};
-
-const homelist = (req, res) => {
-    const path = "/api/locations";
-    const requestOptions = {
-        url: `${apiOptions.server}${path}`,
-        method: "GET",
-        json: {},
-        qs: {
-            // lng: 1,
-            // lat: 1,
-            lng: 126.989697,
-            lat: 37.28413,
-            maxDistance: 200000,
-        },
-    };
-    request(requestOptions, (err, { statusCode }, body) => {
-        if (err) {
-            console.error("Request error:", err);
-            return renderHomepage(req, res, data);
-        }
-
-        if (!response) {
-            console.error("No response received");
-            return renderHomepage(req, res, data);
-        }
-
-        let data = [];
-        if (statusCode === 200 && body.length) {
-            data = body.map((item) => {
-                item.distance = formatDistance(item.distance);
-                return item;
-            });
-        }
-        renderHomepage(req, res, data);
     });
 };
 
