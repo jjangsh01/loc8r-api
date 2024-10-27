@@ -39,23 +39,13 @@ const homelist = (req, res) => {
         method: "GET",
         json: {},
         qs: {
+            // lng: 1,
+            // lat: 1,
             lng: 126.989697,
             lat: 37.28413,
-            maxDistance: 0.002,
+            maxDistance: 200000,
         },
     };
-    /*
-화서역
-  lng: 126.989697,
-  lat: 37.28413,
-*/
-
-    /*
-서울역 
-  lng:126.972306,
-  lat:37.556163,
-*/
-
     request(requestOptions, (err, { statusCode }, body) => {
         let data = [];
         if (statusCode === 200 && body.length) {
@@ -64,7 +54,7 @@ const homelist = (req, res) => {
                 return item;
             });
         }
-        renderHomepage(req, res, body);
+        renderHomepage(req, res, data);
     });
 };
 
@@ -79,30 +69,7 @@ const formatDistance = (distance) => {
     }
     return thisDistance + unit;
 };
-/*
-const locationInfo = (req, res) => {
-    console.log("locationInfo");
-    const path = `/api/locations/${req.params.locationid}`;
-    const requestOptions = {
-        url: `${apiOptions.server}${path}`,
-        method: "GET",
-        json: {},
-    };
-    request(requestOptions, (err, { statusCode }, body) => {
-        const data = body;
-        if (statusCode == 200) {
-            data.coords = {
-                lng: body.coords[0],
-                lat: body.coords[1],
-            };
 
-            renderDetailPage(req, res, data);
-        } else {
-            showError(req, res, statusCode);
-        }
-    });
-};
-*/
 const showError = (req, res, status) => {
     let title = "";
     let content = "";
