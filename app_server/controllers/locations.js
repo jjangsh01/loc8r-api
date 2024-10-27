@@ -14,14 +14,18 @@ const requestOptions = {
         offset: 20,
     },
 };
+
 request(requestOptions, (err, response, body) => {
     if (err) {
         console.log(err);
-    }
-    if (response.statusCode === 200) {
-        console.log(body);
+
+        if (response.statusCode === 200) {
+            console.log(body);
+        } else {
+            console.log(response.statusCode);
+        }
     } else {
-        console.log(response.statusCode);
+        console.log("No response received");
     }
 });
 
