@@ -7,9 +7,7 @@ block content
 
   .row
     .col-12.col-md-8
-      form(action="", method="post", role="form")
-        -if (error == "val")
-          .alert.alert-danger(role="alert") All fields required, please try again
+      form(action="/location", method="get", role="form")
         .form-group.row
           label.col-10.col-sm-2.col-form-label(for="name") Name
           .col-12.col-sm-10
@@ -27,5 +25,5 @@ block content
           label.col-10.col-sm-2.col-form-label(for="review") Review
           .col-12.col-sm-10
             textarea#review.form-control(name="review", rows="5")
-        button.btn.btn-primary.float-end Add my review 
+        button.btn.btn-primary.float-right Add my review
     .col-12.col-md-4
