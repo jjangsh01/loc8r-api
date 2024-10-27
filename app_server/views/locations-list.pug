@@ -7,10 +7,12 @@ block content
     .col-12
       h1= pageHeader.title
         small &nbsp;#{pageHeader.strapLine}
+  .row 
+    .col-12.col-md-8 
+      .error= message 
 
   .row
     .col-12.col-md-8
-      .error= message
       each location in locations
         .card
           .card-block
