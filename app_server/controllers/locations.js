@@ -56,12 +56,14 @@ const homelist = (req, res) => {
   lat:37.556163,
 */
 
-    request(requestOptions, (err, response, body) => {
+    request(requestOptions, (err, { statusCode }, body) => {
         let data = [];
-        data = body.map((item) => {
-            item.distance = formatDistance(item.distance);
-            return item;
-        });
+        if (statusCode === 200 && body.length) {
+            data = body.map((item) => {
+                item.distance = formatDistance(item.distance);
+                return item;
+            });
+        }
         renderHomepage(req, res, body);
     });
 };
