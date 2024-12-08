@@ -1,22 +1,42 @@
 const mongoose = require("mongoose");
 const Loc = mongoose.model("Location");
+const User = mongoose.model("User");
+
+const getAuthor = (req, res, callbakc) => {
+    if (req.auth && req.auth.email) {
+        User.findOne({ email: req.auth.email }).exec((err, user) => {
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            } else if (err) {
+                console.log(err);
+                return res.status(404).json(err);
+            }
+            callbakc(req, res, user.name);
+        });
+    } else {
+        return res.status(404).json({ message: "User not found" });
+    }
+};
 
 const reviewsCreate = async (req, res) => {
-    const locationId = req.params.locationid;
-    if (!locationId) {
-        return res.status(404).json({ message: "Location not found" });
-    }
-
-    try {
-        const location = await Loc.findById(locationId).select("reviews").exec();
-        if (location) {
-            await doAddReview(req, res, location);
-        } else {
+    getAuthor(req, res, async (req, res, userName) => {
+        const locationId = req.params.locationid;
+        if (!locationId) {
             return res.status(404).json({ message: "Location not found" });
         }
-    } catch (err) {
-        return res.status(400).json(err);
-    }
+
+        try {
+            const location = await Loc.findById(locationId).select("reviews").exec();
+            console.log(location);
+            if (location) {
+                await doAddReview(req, res, location, userName);
+            } else {
+                return res.status(404).json({ message: "Location not found" });
+            }
+        } catch (err) {
+            return res.status(400).json(err);
+        }
+    });
 };
 
 const reviewsReadOne = async (req, res) => {
@@ -45,13 +65,14 @@ const reviewsReadOne = async (req, res) => {
         return res.status(400).json(err);
     }
 };
-
-const doAddReview = async (req, res, location) => {
+//(req, res, location )
+const doAddReview = async (req, res, location, author) => {
     if (!location) {
         return res.status(404).json({ message: "Location not found" });
     }
     console.log("doAddReview_API");
-    const { author, rating, reviewText } = req.body;
+    // const { author, rating, reviewText } = req.body;
+    const { rating, reviewText } = req.body;
     location.reviews.push({ author, rating, reviewText });
 
     try {

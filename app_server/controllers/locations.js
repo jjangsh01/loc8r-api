@@ -7,6 +7,7 @@ if (process.env.NODE_ENV == "production") {
 }
 
 const homelist = (req, res) => {
+    console.log(apiOptions);
     const path = "/api/locations";
     const requestOptions = {
         url: `${apiOptions.server}${path}`,

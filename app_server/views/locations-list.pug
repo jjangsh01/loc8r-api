@@ -7,24 +7,27 @@ block content
     .col-12
       h1= pageHeader.title
         small &nbsp;#{pageHeader.strapLine}
-  .row 
-    .col-12.col-md-8 
-      .error= message 
 
   .row
     .col-12.col-md-8
-      each location in locations
+      .error= message
+      app-home-list 
         .card
           .card-block
             h4
               a(href=`/location/${location._id}`)= location.name
               +outputRating(location.rating)
-              span.badge.badge-pill.badge-default.float-right= location.distance
+              span.badge.badge-pill.badge-default.float-end= location.distance
             p.address= location.address
             .facilities
               each facility in location.facilities
                 span.badge.badge-warning= facility
 
-
     .col-12.col-md-4
       p.lead= sidebar
+  
+  block scripts  
+    script(src='/build/runtime.e4985b6c090739db.js')
+    script(src='/build/main.9418c8e64af080c0.js')
+    script(src='/build/polyfills.05600847d04151be.js')
+  
